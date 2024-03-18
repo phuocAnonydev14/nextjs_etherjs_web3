@@ -1,6 +1,23 @@
+"use client"
 import Image from "next/image";
+import {useEffect, useState} from "react";
+import {Web3} from "web3";
 
 export default function Home() {
+
+  const [web3, setWeb3] = useState(null)
+  const [address, setAddress] = useState(null)
+
+  useEffect(() => {
+    window.ethereum ?
+        window.ethereum.request({ method: "eth_requestAccounts" }).then((accounts: any) => {
+          setAddress(accounts[0])
+          let w3 = new Web3(ethereum)
+          setWeb3(w3)
+        }).catch((err) => console.log(err))
+        : console.log("Please install MetaMask")
+  }, [])
+
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
