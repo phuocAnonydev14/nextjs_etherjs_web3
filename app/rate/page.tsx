@@ -12,12 +12,9 @@ export default function RatePage() {
     digits: number
   }) => {
     try {
-      console.log(contract.methods)
       const res = await contract.methods.setRate(token1, token2, rate, digits).send({from:address})
-      console.log(res)
       message.success("Set rate successfully")
     } catch (e) {
-      console.log({e})
       message.error("Set rate failed")
     }
   }

@@ -1,11 +1,6 @@
 "use client"
 import Image from "next/image";
 import {useEffect, useState} from "react";
-import {Web3} from "web3";
-import abi from '@/common/contracts/contractAbi.json';
-import {contractSwapAddress} from "@/common/contracts/contractAddress";
-import {min} from "superstruct";
-import {ethers} from "ethers";
 import {useContractContext} from "@/common/providers/ContractProviders";
 
 export default function Home() {
@@ -16,7 +11,6 @@ export default function Home() {
     try {
       contract.events.SetRate()
         .on("data",(event) => {
-        console.log(event)
           alert(event)
       })
 
