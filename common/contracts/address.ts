@@ -1,1 +1,0 @@
-export const contractTokenAddress = '0x5af36c896fef3135f4c6a6849d6f4495a26481ad'

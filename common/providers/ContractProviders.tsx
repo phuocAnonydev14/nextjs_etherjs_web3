@@ -23,39 +23,38 @@ export const ContractProvider = ({children}: PropsWithChildren) => {
   const [balance, setBalance] = useState<string>('0')
 
   useEffect(() => {
-    window.ethereum ?
-      window.ethereum.request({method: "eth_requestAccounts"}).then((accounts: any) => {
-        setAddress(accounts[0])
-        let w3 = new Web3(window.ethereum)
-        setWeb3(w3)
+    if (!window?.ethereum) {
+      alert("Please install metamask wallet")
+      return
+    }
 
-        let contract = new w3.eth.Contract(abi, contractSwapAddress)
-        setContract(contract)
-        console.log({contract})
-        contract.methods.totalSupply().call().then((_supply) => {
-          // Optionally set it to the state to render it using React
-          setTotalSupply(_supply)
-          console.log({_supply})
-        }).catch((err) => console.log(err))
-      }).catch((err) => console.log(err))
-      : console.log("Please install MetaMask")
+    window?.ethereum?.request({method: "eth_requestAccounts"}).then((accounts: any) => {
+      // if array not available
+      setAddress(accounts[0])
+      let w3 = new Web3(window.ethereum)
+      setWeb3(w3)
+      let contract = new w3.eth.Contract(abi, contractSwapAddress)
+      setContract(contract)
+    }).catch((err) => console.log(err))
   }, [])
 
   useEffect(() => {
+    const getbalance = () => {
+      // Requesting balance method
+      window?.ethereum?.request({
+        method: "eth_getBalance",
+        params: [address, "latest"],
+      })
+        .then((balance: any) => {
+          // Setting balance
+          return setBalance(ethers.formatEther(balance));
+        })
+    };
+
     getbalance()
   }, [contract, web3]);
 
-  const getbalance = () => {
-    // Requesting balance method
-    window?.ethereum?.request({
-      method: "eth_getBalance",
-      params: [address, "latest"],
-    })
-      .then((balance: any) => {
-        // Setting balance
-        return setBalance(ethers.formatEther(balance));
-      })
-  };
+
 
   const contractContextVal = {contract,address,web3,balance}
 
