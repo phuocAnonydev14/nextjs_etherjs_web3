@@ -8,26 +8,34 @@ export default function Home() {
   const {contract, address, balance} = useContractContext()
   const [adminAddress,setAdminAddress] =  useState('')
 
-  async function listenToEvent() {
-    try {
-      contract.events.SetRate()
-        .on("data",(event) => {
-          alert(event)
-      })
-
-    } catch (e) {
-
-    }
-  }
+  // async function listenToEvent() {
+  //   try {
+  //     contract.events.SetRate()
+  //       .on("data",(event) => {
+  //         console.log({event})
+  //         alert(event)
+  //     })
+  //     // @ts-ignore
+  //       .on("error",(error) => {
+  //         console.log(error)
+  //       })
+  //       .on("changed",data => {
+  //         console.log({data})
+  //       })
+  //
+  //   } catch (e) {
+  //
+  //   }
+  // }
 
   useEffect(() => {
-    listenToEvent()
+    // listenToEvent()
 
     async function call() {
       try {
         if (!address) return
-        const admin: string = await contract.methods.admin().call()
-        setAdminAddress(admin)
+        // const admin: string = await contract.methods.admin().call()
+        // setAdminAddress(admin)
       } catch (e) {
         console.log({e})
       }

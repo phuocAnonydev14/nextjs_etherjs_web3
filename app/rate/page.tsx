@@ -2,6 +2,7 @@
 
 import {Button, Form, Input, message} from "antd";
 import {useContractContext} from "@/common/providers/ContractProviders";
+import {useEffect} from "react";
 
 export default function RatePage() {
   const {contract, address, web3} = useContractContext()
@@ -19,6 +20,30 @@ export default function RatePage() {
     }
   }
 
+  useEffect(() => {
+    async function listenToEvent() {
+      try {
+        contract?.events?.SetRate()
+          ?.on("data",(event) => {
+            console.log({event})
+            alert(event)
+          })
+          // @ts-ignore
+          ?.on("error",(error) => {
+            console.log(error)
+          })
+          ?.on("changed",(data: any) => {
+            console.log({data})
+          })
+
+      } catch (e) {
+        console.log({e})
+      }
+    }
+
+    listenToEvent().finally()
+  }, []);
+
   return <div>
     <h2>Set Rate between 2 tokens</h2>
     <div style={{maxWidth:"500px"}}>
@@ -35,7 +60,7 @@ export default function RatePage() {
           <Input style={{background: "transparent", border: "unset", borderBottom: "2px solid #fff", color: "#fff"}}
                  placeholder={"Enter amount"} type={"number"}/>
         </Form.Item>
-        <Button htmlType={"submit"} type={"primary"}>Handle swap</Button>
+        <Button htmlType={"submit"} type={"primary"}>Rate</Button>
       </Form>
     </div>
   </div>

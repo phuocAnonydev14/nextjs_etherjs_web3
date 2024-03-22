@@ -3,6 +3,7 @@ import {tokenTestAddress} from "@/common/contracts/tokenTestaddress"
 import {TokenEnums} from "@/common/enums/TokenEnums";
 import {tokenJukiAddress} from "@/common/contracts/tokenJuki";
 import tokenJukiAbi from "@/common/contracts/tokenJukiabi.json"
+export const nativeContract = "0x0000000000000000000000000000000000000000"
 
 export const contractToken = {
   [TokenEnums.JU]:{
@@ -12,5 +13,9 @@ export const contractToken = {
   [TokenEnums.TE]:{
     address: tokenTestAddress,
     abi: tokenTestAbi
+  },[TokenEnums.NATIVE]:{
+    address: nativeContract,
+    abi: tokenTestAbi
   }
 }
+

@@ -1,4 +1,5 @@
 export enum TokenEnums {
   TE = "Test",
-  JU = "Juki"
+  JU = "Juki",
+  NATIVE = "native"
 }
