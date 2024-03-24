@@ -1,1 +1,1 @@
-export const tokenJukiAddress = "0x33C6B13224012A4022729d71eddA8937b60f82D1"
+export const tokenJukiAddress = "0x4d412f0720bfcca728DfcAe830B6e841572395FD"
