@@ -2,7 +2,7 @@
 
 import { Button, Input, message, Select } from "antd";
 import { useContractContext } from "@/common/providers/ContractProviders";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { validateUserBalance } from "@/common/utils/validateUserBalance";
 import { TokenEnums } from "@/common/enums/TokenEnums";
 import { contractToken } from "@/common/constants/ContractConstants";
@@ -81,6 +81,32 @@ export default function SwapPage() {
       console.log({ e });
     }
   };
+
+  useEffect(() => {
+    async function listenToEvent() {
+      try {
+        console.log(contract.events);
+        
+        contract?.events
+          ?.Swap()
+          ?.on("data", (event) => {
+            console.log({ event });
+            alert(event);
+          })
+          // @ts-ignore
+          ?.on("error", (error) => {
+            console.log(error);
+          })
+          ?.on("changed", (data: any) => {
+            console.log({ data });
+          });
+      } catch (e) {
+        console.log({ e });
+      }
+    }
+
+    listenToEvent();
+  }, [contract]);
 
   return (
     <div>
