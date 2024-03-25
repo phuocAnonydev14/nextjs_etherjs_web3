@@ -7,6 +7,21 @@ import { validateUserBalance } from "@/common/utils/validateUserBalance";
 import { TokenEnums } from "@/common/enums/TokenEnums";
 import { contractToken } from "@/common/constants/ContractConstants";
 
+const tokenList = [
+  {
+    label: "Juki token",
+    value: TokenEnums.JU,
+  },
+  {
+    label: "Test token",
+    value: TokenEnums.TE,
+  },
+  {
+    label: "native token",
+    value: TokenEnums.NATIVE,
+  },
+];
+
 export default function SwapPage() {
   const { contract, address, web3 } = useContractContext();
   const [tokenState, setTokenState] = useState<{
@@ -16,22 +31,6 @@ export default function SwapPage() {
     tokenIn: TokenEnums.TE,
     tokenOut: TokenEnums.JU,
   });
-
-  const tokenList = [
-    {
-      label: "Juki token",
-      value: TokenEnums.JU,
-    },
-    {
-      label: "Test token",
-      value: TokenEnums.TE,
-    },
-    {
-      label: "native token",
-      value: TokenEnums.NATIVE,
-    },
-  ];
-
   const [amountSwap, setAmountSwap] = useState(0);
 
   const handleSwapToken = async () => {
@@ -46,9 +45,8 @@ export default function SwapPage() {
         address,
         tokenState.tokenIn
       );
-      console.log("come");
       
-      setTimeout(() => {}, 2000);
+      setTimeout(() => {}, 1000);
       if (tokenState.tokenIn === TokenEnums.NATIVE) {
         const res = await contract.methods
           .swap(
@@ -64,13 +62,8 @@ export default function SwapPage() {
 
         return;
       }
-      console.log(
-        contractToken[tokenState.tokenIn].address,
-        contractToken[tokenState.tokenOut].address,
-        amountSwap
-      );
       const res = await contract.methods
-        .swap(
+        .swapWithoutPayable(
           contractToken[tokenState.tokenIn].address,
           contractToken[tokenState.tokenOut].address,
           amountSwap
@@ -85,13 +78,10 @@ export default function SwapPage() {
   useEffect(() => {
     async function listenToEvent() {
       try {
-        console.log(contract.events);
-        
         contract?.events
           ?.Swap()
           ?.on("data", (event) => {
-            console.log({ event });
-            alert(event);
+            alert(`token ${event?.returnValues?.tokenIn} and token ${event?.returnValues?.tokenOut} swap successfully`);
           })
           // @ts-ignore
           ?.on("error", (error) => {
@@ -106,7 +96,7 @@ export default function SwapPage() {
     }
 
     listenToEvent();
-  }, [contract]);
+  }, [address]);
 
   return (
     <div>

@@ -1,7 +1,7 @@
-import { Web3 } from "web3";
-import { contractSwapAddress } from "@/common/contracts/contractAddress";
-import { TokenEnums } from "@/common/enums/TokenEnums";
-import { contractToken } from "@/common/constants/ContractConstants";
+import {Web3} from "web3";
+import {contractSwapAddress} from "@/common/contracts/contractAddress";
+import {TokenEnums} from "@/common/enums/TokenEnums";
+import {contractToken} from "@/common/constants/ContractConstants";
 
 export async function validateUserBalance(
   amount: string,
@@ -17,19 +17,18 @@ export async function validateUserBalance(
       contractToken[tokenOut].abi,
       contractToken[tokenOut].address
     );
-    const tokenAllowance = await token?.methods
+    const tokenAllowance = BigInt(await token?.methods
       ?.allowance(userAddress, contractSwapAddress)
-      .call();
-    console.log({ tokenAllowance, tokenOut, methods: token?.methods });
+      .call())
 
-    if (tokenAllowance && +tokenAllowance > +amount) {
+    if (tokenAllowance && tokenAllowance > +amount) {
       return;
     }
 
     await token.methods
       .approve(contractSwapAddress, amount)
-      .send({ from: userAddress });
+      .send({from: userAddress});
   } catch (e) {
-    console.log({ e });
+    console.log({e});
   }
 }

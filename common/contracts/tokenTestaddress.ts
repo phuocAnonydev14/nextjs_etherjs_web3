@@ -1,1 +1,1 @@
-export const tokenTestAddress = '0x2f9258CCD5713BB3CCB915C006C494EcEE8a7ab2'
+export const tokenTestAddress = '0x0195E858190aDC25A5B99D6eE29e8D2fC266166a'
